@@ -4,12 +4,13 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from ExploreOWL import load_file_db
 from Neo4JConnector.NeoConnector2 import NeoConnector2
-
+from werkzeug.serving import run_simple
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 from logs import logger
 
 
-from flask import Flask, jsonify, request, redirect
+from flask import Flask, jsonify, request, redirect, Blueprint
 import json
 from flask_cors import CORS, cross_origin
 
@@ -17,8 +18,11 @@ from flask import Flask, render_template
 
 UPLOAD_FOLDER = 'upload_folder'
 ALLOWED_EXTENSIONS = {'ttl'}
-
+bp = Blueprint('burritos', __name__,
+                        template_folder='templates')
 app = Flask(__name__)
+
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 connector2 = NeoConnector2()
 CORS(app)
@@ -27,6 +31,9 @@ CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 # df = pd.read_csv('data/data2.csv')
+
+
+
 
 @app.before_request
 def before_request():
@@ -37,7 +44,7 @@ def before_request():
         return jsonify(headers), 200
 
 
-@app.route('/')
+@bp.route('/')
 def home():
     nodes, links, all_ids = connector2.get_general_graph()
     nodes_dict = [node.to_dict() for node in nodes]
@@ -48,7 +55,7 @@ def home():
     return render_template('index.html', data=data, all_ids=all_ids)
 
 
-@app.route('/search', methods=['GET'])
+@bp.route('/search', methods=['GET'])
 def search():
     print(request)
     search_str = request.args.get('search')
@@ -62,7 +69,7 @@ def search():
     return render_template('index.html', data=data, all_ids=all_ids)
 
 
-@app.route('/expand_node_2', methods=['POST'])
+@bp.route('/expand_node_2', methods=['POST'])
 def expand_node_2():
     data = request.get_json()
     logger.info(f"expand node {data}")
@@ -74,7 +81,7 @@ def expand_node_2():
     }, indent=4)
 
 
-@app.route('/upload', methods=['POST'])
+@bp.route('/upload', methods=['POST'])
 def upload_file():
     print("Current working directory:", os.getcwd())
     if 'file' not in request.files:
@@ -89,6 +96,7 @@ def upload_file():
         load_file_db(file_path)
         return redirect('/')
 
+app.register_blueprint(bp, url_prefix='/abc')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5005)  # , debug=True)
