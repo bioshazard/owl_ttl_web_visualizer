@@ -1,0 +1,11 @@
+# Flask stuff:
+instance/
+.webassets-cache
+*.log
+
+# PyCharm
+.idea/
+.DS_Store/
+
+
+**/clean_venv/
