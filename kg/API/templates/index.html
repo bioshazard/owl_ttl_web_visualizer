@@ -1,0 +1,985 @@
+ {% include 'header.html' %}
+ <style>
+
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    .selected-statement{
+        border: 1px solid var(--bs-primary);
+        color: var(--bs-primary);
+        background: #E9F3FE;
+        cursor: url('<?=base_url()?>/public/layout/font-awesome/minus_sign.png'), pointer;
+
+    }
+
+
+
+    .unselected-statement{
+        border: 1px solid var(--bs-dark);
+        background-color: transparent;
+        color: var(--bs-dark);
+        cursor: url('<?=base_url()?>/public/layout/font-awesome/plus-sign.png'), pointer;
+    }
+
+    .selected-statement > div{
+        color: var(--bs-text-primary)!important;
+    }
+
+    .unselected-statement > div{
+        color: var(--bs-text-gray-600)!important;
+    }
+
+    #languages-container > div :hover{
+        color: var(--bs-text-primary)!important;
+    }
+
+    .tooltip-inner {
+        text-align: left;
+        font-size: 13px;
+    }
+
+    #search-card{
+        scrollbar-width: revert;
+        /*scrollbar-color: red yellow;*/
+    }
+
+    .bi.bi-question-circle:hover {
+        fill: blue !important; /* Change this to the desired hover color */
+    }
+
+    .fade-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50px; /* Adjust the fading height */
+        background: linear-gradient(to bottom, transparent, #fcfcfc); /* Fades to the color of your page background */
+    }
+
+
+
+    .vis-item.vis-line {
+        left: 0 !important;
+    }
+
+    .info-card {
+        position: absolute;
+        top: 50%; /* Centrat vertical */
+        right: 10px; /* Distanță de marginea dreaptă */
+        transform: translateY(-50%); /* Centrare perfectă vertical */
+    }
+
+    .loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: none; /* Ascunzi inițial loading-ul */
+    }
+
+    .loading::before {
+        content: '';
+        width: 30px;
+        height: 30px;
+        border: 4px solid #ddd;
+        border-top: 4px solid blue;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+<body id="kt_app_body" style="background: #474747; background-color: #f9f9f9" data-kt-app-header-fixed="true" data-kt-app-header-fixed-mobile="true" data-kt-app-sidebar-enabled="true"
+      data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-aside-enabled="true" data-kt-app-aside-fixed="true" data-kt-app-aside-push-toolbar="true"
+      data-kt-app-aside-push-footer="true" class="app-default"
+      data-kt-app-page-loading-enabled="true" data-kt-app-page-loading="on">
+
+
+<div id="kt_app_header" class="app-header d-flex flex-column flex-stack" style="height: 70px">
+    <!--begin::Header main-->
+    <div class="d-flex flex-stack flex-grow-1" >
+        <!--begin::Navbar-->
+        <div class="app-navbar flex-grow-1 justify-content-end" id="kt_app_header_navbar">
+            <div class="app-navbar-item d-flex align-items-stretch flex-lg-grow-1">
+                <!--begin::Search-->
+                <div id="kt_header_search" class="header-search d-flex align-items-center w-100 ms-12 pe-15" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-search-responsive="true" data-kt-menu-trigger="auto" data-kt-menu-permanent="true" data-kt-menu-placement="bottom-start">
+                    <!--begin::Form(use d-none d-lg-block classes for responsive search)-->
+                    <form data-kt-search-element="form" class="d-lg-block w-100 position-relative mb-5 mb-lg-0" autocomplete="off"
+                          action="{{ url_for('search') }}" method="get" id="searchForm" enctype="multipart/form-data">
+                        <!--begin::Icon-->
+                        <i class="ki-outline ki-magnifier search-icon fs-2 text-gray-500 position-absolute top-50 translate-middle-y ms-5"></i>
+                        <!--end::Icon-->
+                        <!--begin::Input-->
+                        <input type="text" id="searchInput" class="search-input form-control form-control border h-lg-45px ps-13" name="search" value="" placeholder="Search..." data-kt-search-element="input" />
+                        <!--end::Input-->
+                        <!--begin::Spinner-->
+                        <span class="search-spinner position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-5" data-kt-search-element="spinner">
+											<span class="spinner-border h-15px w-15px align-middle text-gray-500"></span>
+										</span>
+                        <!--end::Spinner-->
+                        <!--begin::Reset-->
+                        <span class="search-reset btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-4" data-kt-search-element="clear">
+											<i class="ki-outline ki-cross fs-2 fs-lg-1 me-0"></i>
+										</span>
+                        <!--end::Reset-->
+                    </form>
+                    <!--end::Form-->
+                </div>
+                <!--end::Search-->
+
+            </div>
+
+        </div>
+        <!--end::Navbar-->
+    </div>
+
+    <!--end::Header main-->
+</div>
+
+
+<!--begin::Page loading(append to body)-->
+<div class="page-loader flex-column">
+    <span class="spinner-border text-primary" role="status"></span>
+    <span id="loading_page_text" class="text-muted fs-6 fw-semibold mt-5">Creating visuals...</span>
+</div>
+<!--end::Page loading-->
+
+<div class="d-flex flex-column flex-root app-root " id="kt_app_root" style="margin-top: 60px">
+    <div class="app-page flex-column flex-column-fluid " id="kt_app_page">
+        <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
+            <div class="d-flex flex-column flex-column-fluid" id="kt_app_root">
+                <div id="kt_app_content" class="app-content flex-column-fluid  bg-light">
+                    <!--begin::Content container-->
+                    <div id="kt_app_content_container" class="app-container container-fluid bg-light">
+                        <div class="row">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="fs-5 fw-bold text-gray-900">Graph exploration</span>
+                            </div>
+                            <!--end::Statistics-->
+                            <!--begin::Description-->
+                            <span class="fs-6 fw-semibold text-gray-500">
+                                Double click the nodes to zoom or drag the nodes to the desired
+                                <br/>
+                                Use scroll to zoom, right click to rotate and left click to move up and down.
+                            </span>
+                            <br/>
+                        </div>
+                            <div class="d-flex align-items-center mb-2 mt-4">
+                                <span class="fs-5 fw-bold text-gray-900">Upload a owl (with ttl extension) file</span>
+                            </div>
+                            <!--end::Statistics-->
+                            <!--begin::Description-->
+                            <span class="fs-6 fw-semibold text-gray-500">
+                                Choose a ttl file to visualize
+                            </span>
+                            <form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+                                <input type="file" name="file" class="btn btn-secondary">
+                                <input type="submit" value="Upload" class="btn btn-secondary">
+                            </form>
+
+
+                        <div class="toolbar bg-white text-white p-2 d-flex justify-content-between row">
+                            <!-- Left Button Group -->
+{#                            <div class="col-auto">#}
+{#                                <button type="button" class="btn btn-secondary" onclick="changeAppearance(this, 'Entity')">Keywords</button>#}
+{#                                <button type="button" class="btn btn-secondary"  onclick="changeAppearance(this, 'Channel')">Channels</button>#}
+{#                                <button type="button" class="btn btn-secondary"  onclick="changeAppearance(this, 'Location')" >Countries</button>#}
+{#                                <button type="button" class="btn btn-secondary" onclick="changeAppearance(this, 'Language')" >Languages</button>#}
+{#                            </div>#}
+{#                            <!-- Right Button Group -->#}
+{#                            <div class="col-auto d-flex align-self-center">#}
+{##}
+{#                                    <span class="badge badge-square badge-light " style="background-color:#32648D; margin:auto; margin-right: 5px; min-width: 15px; height: 15px"></span>#}
+{#                                    <span  class="fs-6 text-gray-900" style="margin-right: 20px">Statements</span>#}
+{#                                <span class="badge badge-square badge-light " style="background-color:#415741; margin:auto; margin-right: 5px; min-width: 15px; height: 15px"></span>#}
+{#                                <span  class="fs-6 text-gray-900" style="margin-right: 20px">Keywords</span>#}
+{#                                <span class="badge badge-square badge-light " style="background-color:#8B3434; margin:auto; margin-right: 5px; min-width: 15px; height: 15px"></span>#}
+{#                                <span  class="fs-6 text-gray-900" style="margin-right: 20px">Countries</span>#}
+{#                                <span class="badge badge-square badge-light " style="background-color:#B26C27; margin:auto; margin-right: 5px; min-width: 15px; height: 15px"></span>#}
+{#                                <span  class="fs-6 text-gray-900" style="margin-right: 20px">Channels</span>#}
+{#                                <span class="badge badge-square badge-light " style="background-color:#4B3677; margin:auto; margin-right: 5px; min-width: 15px; height: 15px"></span>#}
+{#                                <span  class="fs-6 text-gray-900">Languages</span>#}
+{##}
+{#                            </div>#}
+                        </div>
+
+                        <div class="row w-100">
+                            <div style="padding-left: 0px;  position: relative;">
+                                <div id="3d-graph" style=" max-width: 100%; padding-left: 0px"></div>
+
+                                <!--Start Card info graph -->
+                                <div class="card card-flush shadow-sm w-300px info-card" id="info_graph_card" style="display: none">
+                                    <div class="loading" id="loadingIndicator"></div>
+                                    <div class="card-header">
+                                        <h5 class="card-title" id="graph_info_type" style="text-decoration: underline;">Statement</h5>
+                                        <div class="card-toolbar">
+                                            <a href="#" id="graph_info_read_article" target="_blank" class="btn btn-icon btn-sm btn-active-color-primary" >
+                                                <i class="fas fa-book-reader" title="Read Original Article"></i>
+                                            </a>
+                                            <a href="#" id="graph_info_hide" class="btn btn-icon btn-sm btn-active-color-primary">
+                                                <i class="fas fa-eye-slash" title="Hide from Graph"></i>
+                                            </a>
+                                            <a href="#" id="graph_remove" class="btn btn-icon btn-sm btn-active-color-primary">
+                                                <i class="fas fa-trash" title="Remove"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-icon btn-sm btn-active-color-primary" id="close-info-graph-btn">
+                                                <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="card-body py-1">
+                                        <h3 class="card-title pb-3" id="graph_info_statement">Pandemic-related info elicited medical and political disinformation</h3>
+
+                                        <p id="graph_info_narrative"><strong>Narrative source:</strong> <span>COVID-19: against vaccines and 'totalitarianism'</span></p>
+                                        <p id="graph_info_languages"><strong>Languages of publication:</strong> English, Spanish, German</p>
+                                        <p id="graph_info_channels"><strong>Channels of publication:</strong> youtube.com, facebook.com</p>
+                                        <p id="graph_info_public_figure"><strong>Public figure:</strong></p>
+
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p id="graph_info_connections" class="mt-2" style="font-style: italic">Element connected to: <span style="font-weight: bold"></span> other nodes</p>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <!-- ALERT SUCCESS-->
+                                                <div class="alert alert-dismissible bg-light-success flex-column flex-sm-row p-5 mb-10 d-flex" id="alert_success">
+
+                                                    <!--begin::Wrapper-->
+                                                    <div class="d-flex flex-column pe-0 pe-sm-10">
+                                                        <!--begin::Title-->
+                                                        <h4 class="fw-semibold">Success</h4>
+                                                        <!--end::Title-->
+
+                                                        <!--begin::Content-->
+                                                        <span id="text_success">X more items were added in the graph</span>
+                                                        <!--end::Content-->
+                                                    </div>
+                                                    <!--end::Wrapper-->
+
+                                                    <!--begin::Close-->
+                                                    <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" onclick="hideInfoCardAlerts()">
+                                                        <i class="ki-duotone ki-cross fs-1 text-primary"><span class="path1"></span><span class="path2"></span></i>
+                                                    </button>
+                                                    <!--end::Close-->
+                                                </div>
+                                                <!--END ALERT SUCCESS-->
+                                                <!-- ALERT ERROR -->
+                                                <div class="alert alert-dismissible bg-light-danger flex-column flex-sm-row p-5 mb-10 d-flex" id="alert_error">
+
+                                                    <!--begin::Wrapper-->
+                                                    <div class="d-flex flex-column pe-0 pe-sm-10">
+                                                        <!--begin::Title-->
+                                                        <h4 class="fw-semibold">Try expanding another element</h4>
+                                                        <!--end::Title-->
+
+                                                        <!--begin::Content-->
+                                                        <span>No other elements related to the query and the selected nodes were found.</span>
+                                                        <!--end::Content-->
+                                                    </div>
+                                                    <!--end::Wrapper-->
+
+                                                    <!--begin::Close-->
+                                                    <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" onclick="hideInfoCardAlerts()">
+                                                        <i class="ki-duotone ki-cross fs-1 text-primary"><span class="path1"></span><span class="path2"></span></i>
+                                                    </button>
+                                                    <!--end::Close-->
+                                                </div>
+                                                <!--END ALERT ERROR -->
+                                            </div>
+                                            <div class="row" id="expand_section">
+                                            <div class="col-8"><p class="fs-8">Want to see more connection related to this?</p></div>
+                                            <div class="col-3">
+                                                <button type="button" class="btn btn-secondary btn-sm" id="graph_info_expand">Expand</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Card info graph -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="//unpkg.com/three"></script>
+<script src="//unpkg.com/d3"></script>
+<script src="{{ url_for('static', filename='/layout/graph/js/3d-force-graph.min.js')}}"></script>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type="importmap">{ "imports": { "three": "https://unpkg.com/three/build/three.module.js" }}</script>
+<script type="module"></script>
+<script src="//unpkg.com/three-spritetext"></script>
+
+ <script>
+
+      var all_data = {{ data | tojson }};
+      var query_id = 1;
+      var all_ids = {{ all_ids | tojson }};
+      var current_results =all_ids
+         console.log(all_data);
+        console.log(query_id);
+        console.log(all_ids);
+        console.log(current_results);
+    {#var all_data = <?php echo json_encode($data)?>;#}
+    {#var query_id = <?php echo json_encode($query_id)?>;#}
+    {#var all_ids = <?php echo json_encode($all_ids)?>;#}
+    {#var current_results = <?php echo json_encode($current_results)?>;#}
+    var hand_selected_nodes = {
+        'Record': [],
+        'Entity': [],
+        'Location': [],
+        'Channel': [],
+        'Language': [],
+    }
+    console.log(all_data)
+    var colors = {
+        'Record': '#32648D',
+        'LinkText': '#6c757d',
+        'Fake_Statement': '#32648D',
+        'Entity': '#415741',
+        'Location': '#8B3434',
+        'Channel': '#B26C27',
+        'Language': '#4B3677',
+        'default': 'rgb(90,151,162)',
+        //'hide': '#1E293D'
+        'hide': 'rgba(219, 223, 233, 0.3)'
+    }
+
+    var controls = {
+        'Fake_Statement': true,
+        'Entity': false,
+        'Location': false,
+        'Channel': false,
+        'Language': false,
+        'default': false
+    }
+
+    var Graph
+    var success_card = $('#alert_success')
+    var error_card = $('#alert_error');
+    var text_success = $('#text_success');
+    var highlightedNodes = []
+    hideInfoCardAlerts()
+
+    function hideInfoCardAlerts()
+    {
+        success_card.addClass('d-none');
+        error_card.addClass('d-none');
+    }
+
+
+</script>
+
+
+
+
+<script>
+    function changeAppearance(el, text){
+        controls[text] = !controls[text]
+        //console.log(el)
+        if (controls[text]){
+            el.classList.add('active')
+        }
+        else{
+            el.classList.remove('active')
+            if (text in hand_selected_nodes)
+                hand_selected_nodes[text] = []
+        }
+        updateGraph()
+    }
+
+
+</script>
+
+<!--create highlight in nodes-->
+<script>
+    function createHighlight(node_id){
+        highlightedNodes = []
+        highlightedNodes.push(node_id)
+        all_data['links'].forEach(link =>{
+            if (link['source'].hasOwnProperty("id")) {
+                if (link['source']['id'] === node_id)
+                    highlightedNodes.push(link['target']['id'])
+                else if (link['target']['id'] === node_id)
+                    highlightedNodes.push(link['source']['id'])
+            }
+            else{
+                if (link['source'] === node_id)
+                    highlightedNodes.push(link['target'])
+                else if (link['target'] === node_id)
+                    highlightedNodes.push(link['source'])
+            }
+        })
+        // console.log('HIGHLIGHTED NODES')
+        // console.log(highlightedNodes)
+        updateGraph()
+    }
+</script>
+<!--END create highlight in nodes-->
+
+<!-- START WITH 3D FORCE GRAPH-->
+
+<script type="module">
+    import { CSS2DRenderer, CSS2DObject } from '//unpkg.com/three/examples/jsm/renderers/CSS2DRenderer.js';
+    import SpriteText from "//unpkg.com/three-spritetext/dist/three-spritetext.mjs";
+    var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    console.log("Screen width: " + screenWidth + " pixels");
+
+    function updateGraph(){
+        console.log('entering update graph ')
+
+        var my_data2 = {}
+        my_data2["nodes"]= all_data["nodes"]
+        my_data2["links"] = all_data['links']
+        Graph
+            .graphData(my_data2)
+            .nodeThreeObject(node => {
+                var nodeEl;
+                nodeEl = new SpriteText(node.node['name'])
+                nodeEl.material.depthWrite = false;
+                let selected = []
+                if (node && node['type'] in hand_selected_nodes)
+                    selected = hand_selected_nodes[node['type']]
+                if (controls[node.type] === false && !selected.includes(node['id'])){
+                    nodeEl.color = colors['hide']; // Text color based on type
+                    nodeEl.backgroundColor = colors['hide']
+                }
+                else {
+                    nodeEl.color = '#ffffff'; // Text color based on type
+                    nodeEl.backgroundColor = colors[node.type] || colors['undefined']; // Background color based on type with fallback
+                }
+                nodeEl.textHeight = 5; // Adjust text size
+                // Style adjustments to mimic div style
+                nodeEl.padding = 8; // Mimics CSS padding, requires a custom approach in rendering
+                nodeEl.borderWidth = 0; // If you need a border, you can set it and specify borderColor
+                nodeEl.borderColor = '#ffffff';
+                if (highlightedNodes.includes(node['id'])){
+                    nodeEl.borderWidth = 2;
+                    nodeEl.borderColor = 'rgb(248,222,0)';
+                }
+                return nodeEl;
+
+            })
+            .nodeColor(node=>{
+                return 'rgba(0,0,0,0)';
+            })
+            .linkLabel(link => link.name)
+
+    }
+
+    window.updateGraph = updateGraph;
+
+    function updateGraphAnalyze(){
+        console.log('entering update graph analyze')
+        //var origin_node = data['origin'][0]
+        var my_data2 = {}
+        my_data2["nodes"]= all_data["nodes"]
+        my_data2["links"] = all_data['links']
+
+        // SET height of nodes according to their type
+        my_data2.nodes.forEach((node) => {
+            //node.fx = 0; // fix x-coordinate to center them
+            if (node.type === 'Fake_Statement') {
+                node.fy = 300; // spread nodes vertically
+                //node.fz = 10;
+            }
+            else if (node.type === 'Entity'){
+                node.fy = 100;
+                //node.fz = 0; // fix z-coordinate for a 2D plane effect
+            }
+            else if (node.type === 'Location'){
+                node.fy = 0;
+                //node.fz = 0; // fix z-coordinate for a 2D plane effect
+            }
+            else if (node.type === 'Channel'){
+                node.fy = -100;
+                //node.fz = 0; // fix z-coordinate for a 2D plane effect
+            }
+            else if (node.type === 'Language'){
+                node.fy = -200;
+                //node.fz = 0; // fix z-coordinate for a 2D plane effect
+            }
+        });
+
+        var zoom_node = null
+        // var Graph = ForceGraph3D({
+        //     //extraRenderers: [new CSS2DRenderer()]
+        // })
+
+        var last_clicked = null
+
+        Graph = ForceGraph3D({
+            //extraRenderers: [new CSS2DRenderer()]
+        })
+
+        (document.getElementById('3d-graph'))
+            .graphData(my_data2)
+            .backgroundColor("#FFFFFF")
+            //.dagMode('td')
+            //.dagLevelDistance(40)
+            //.nodeAutoColorBy('type')
+            .nodeThreeObject(node => {
+                var nodeEl;
+                if (node.type === 'Fake_Statement')
+                    nodeEl = new SpriteText(node.node['statement'])
+                else {
+                    nodeEl = new SpriteText(node.node['name'])
+                }
+                nodeEl.material.depthWrite = false;
+                if (controls[node.type] === false){
+                    nodeEl.color = colors['hide']; // Text color based on type
+                    nodeEl.backgroundColor = colors['hide']
+                }
+                else {
+                    nodeEl.color = '#ffffff'; // Text color based on type
+                    nodeEl.backgroundColor = colors[node.type] || colors['undefined']; // Background color based on type with fallback
+                }
+                //nodeEl.font = '6vw'
+                //nodeEl.fontStyle = 'bold'
+                nodeEl.textHeight = 10; // Adjust text size
+                // Style adjustments to mimic div style
+                nodeEl.padding = 8; // Mimics CSS padding, requires a custom approach in rendering
+                nodeEl.borderWidth = 0; // If you need a border, you can set it and specify borderColor
+                nodeEl.borderColor = '#ffffff';
+                if (highlightedNodes.includes(node['id'])){
+                    nodeEl.borderWidth = 3;
+                    nodeEl.borderColor = 'rgb(248,222,0)';
+                }
+                return nodeEl;
+
+            })
+            .nodeColor(node=>{
+                return 'rgba(0,0,0,0)';
+            })
+            .onNodeDragEnd(node => {
+                node.fx = node.x;
+                node.fy = node.y;
+                node.fz = node.z;
+                if (controls[node.type] === false) {
+                    const spriteText = node.__threeObj;
+                    spriteText.color = '#ffffff'; // Change to some highlight color when hovered
+                    spriteText.backgroundColor = colors[node.type]
+                }
+            })
+            .onNodeDrag(node => {
+                completeInfoCard(node.node, node);
+                const spriteText = node.__threeObj;
+                if (controls[node.type] === false) {
+                    if (node['type'] in hand_selected_nodes) {
+                        spriteText.color = '#ffffff';
+                        spriteText.backgroundColor = colors[node.type]
+                        hand_selected_nodes[node['type']].push(node['id'])
+
+                    }
+                }
+            })
+            .onBackgroundClick(()=>{
+                info_graph_card.hide();
+                highlightedNodes = []
+            })
+            .onNodeHover((node, previousNode) => {
+                // Node is the node being hovered, previousNode is the node that was hovered before
+                if (node) {
+                    //console.log(node)
+                    const spriteText = node.__threeObj; // Assuming the node object holds the ThreeJS object
+                    if (controls[node.type] === false ) {
+                        spriteText.color = '#ffffff'; // Change to some highlight color when hovered
+                        spriteText.backgroundColor = colors[node.type]
+                    }
+                }
+                let selected = []
+                if (previousNode && previousNode['type'] in hand_selected_nodes)
+                    selected = hand_selected_nodes[previousNode['type']]
+                if (previousNode && ! selected.includes(previousNode['id'])) {
+                    const spriteText = previousNode.__threeObj;
+                    if (controls[previousNode.type] === false) {
+                        spriteText.color = colors['hide'];
+                        spriteText.backgroundColor = colors['hide'];
+                    }
+                }
+            })
+            .linkWidth(link => {
+                if (highlightedNodes.includes(link['source']['id']) || highlightedNodes.includes(link['source']['id']))
+                    return 3
+                return 2
+            })
+            .linkColor(link => {
+                //console.log(link)
+                if (highlightedNodes.length > 0 &&  (highlightedNodes[0] === link['source']['id'] || highlightedNodes[0] === link['target']['id']))
+                    return 'rgb(248,222,0)'
+                return 'rgba(16,15,15,0.19)'
+            })
+            .linkThreeObjectExtend(true)
+            .linkThreeObject(link => {
+              // extend link with text sprite
+                console.log(link)
+              const sprite = new SpriteText(`${link.name}`);
+              sprite.color = colors['LinkText'];
+              sprite.textHeight = 10;
+              return sprite;
+            })
+            .linkPositionUpdate((sprite, { start, end }) => {
+              const middlePos = Object.assign(...['x', 'y', 'z'].map(c => ({
+                [c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
+              })));
+
+              // Position sprite
+              Object.assign(sprite.position, middlePos);
+            })
+            .height(700)
+
+            .onNodeClick(node => {
+                //console.log(node)
+                //console.log('clickMihai ' + JSON.stringify(node.node, null, 2))
+
+                completeInfoCard(node.node, node);
+                const spriteText = node.__threeObj; // Assuming the node object holds the ThreeJS object
+                if (controls[node.type] === false) {
+                    if (node['type'] in hand_selected_nodes && !highlightedNodes.includes(node.id)) {
+                        spriteText.color = '#ffffff'; // Change to some highlight color when hovered
+                        spriteText.backgroundColor = colors[node.type]
+                        hand_selected_nodes[node['type']].push(node['id'])
+                    }
+                }
+
+                createHighlight(node['id'])
+
+                const distance = 500;
+                const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
+
+                const newPos = node.x || node.y || node.z
+                    ? { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }
+                    : { x: 0, y: 0, z: distance }; // special case if node is in (0,0,0)
+
+                Graph.cameraPosition(
+                    newPos, // new position
+                    node, // lookAt ({ x, y, z })
+                    3000  // ms transition duration
+                );
+
+            })
+            .cooldownTicks(10)
+            // .linkDirectionalParticles("value")
+            // .linkDirectionalParticleSpeed(d =>  d.value * 0.001)
+            //.nodeThreeObjectExtend(true)
+        var k = 0
+        Graph.d3Force('charge').strength(-550);
+        //Graph.d3Force('x', d3.forceX().strength(0.1).x(Graph.width() / 2));
+        Graph.onEngineStop(() => {
+            if (k === 0) {
+                k = 1
+                //Graph.zoomToFit(50)
+                Graph.cameraPosition(
+                    { x:0, y:800, z: 800 },  // new position
+                    { x: 0, y: 0, z: 0 },  // look-at position
+                    1000  // transition duration
+                );
+            }
+
+        });
+
+
+    }
+    updateGraphAnalyze()
+    window.updateGraphAnalyze = updateGraphAnalyze;
+</script>
+
+<!--CALL THE BACKEND FOR EXPAND-->
+<script>
+    window.expand = function (node_id) {
+        hideInfoCardAlerts()
+        showLoadingCard()
+        console.log("EXPAN")
+        event.preventDefault()
+        $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:5005/expand_node_2',
+            //url: 'https://mindbugs.go.ro/expand_node',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            data: JSON.stringify({
+                node_id: node_id,
+                //query_id: query_id,
+                current_results: current_results,
+                //all_nodes_ids: all_ids
+            }),
+            success: function(data) {
+                hideLoadingCard()
+                let old_ids = [...all_ids]
+                data['links'].forEach(link => {
+                    //console.log(link);
+                    //console.log(node_id)
+                    let id_s = link['source']
+                    let id_t = link['target']
+                    if (old_ids.includes(id_s) || old_ids.includes(id_t))
+                        for (let index in all_data['nodes']) {
+                            let node = all_data['nodes'][index]
+                            if (node['id'] === id_s)
+                                all_data['nodes'][index]['connections'] = all_data['nodes'][index]['connections'] + 1
+                            if (node['id'] === id_t)
+                                all_data['nodes'][index]['connections'] = all_data['nodes'][index]['connections'] + 1
+                        }
+                });
+                all_data['nodes'] = all_data['nodes'].concat(data['nodes'])
+                all_data['links'] = all_data['links'].concat(data['links'])
+                //updateGraph()
+                let fs_added = 0
+                data['nodes'].forEach(node => {
+                    //console.log(node);
+                    all_ids.push(node.id);
+                    if (node.type === 'Fake_Statement') {
+                        current_results.push(node.id);
+                        fs_added +=1
+                    }
+                });
+                // console.log('updated graph')
+                // console.log(current_results)
+                if (data['nodes'].length === 0){
+                    hideInfoCardAlerts()
+                    error_card.removeClass('d-none')
+                }
+                else {
+                    hideInfoCardAlerts()
+                    text_success.text(data['nodes'].length + " elements and " + fs_added + " disinformation claims added in the graph")
+                    success_card.removeClass('d-none')
+                }
+                createHighlight(node_id)
+                //updateGraphAnalyze(data)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error:', errorThrown);
+            }
+        });
+    }
+</script>
+<!--END CALL THE BACKEND FOR EXPAND-->
+
+<!--DELETE NODE FUNCTION-->
+<script>
+    function delete_node(original_node){
+        highlightedNodes = []
+        let id = original_node.id
+        let decrease_connections = []
+        let deleted_nodes = [id]
+        let index = 0
+        while (index <  all_data['links'].length){
+            let link = all_data['links'][index]
+            if (link['source']['id'] === id){
+                decrease_connections.push(link['target']['id'])
+                //link['target']['node']['connections'] = link['target']['node']['connections'] - 1
+                all_data.links.splice(index, 1);
+                //delete all_data['links'][index]
+            }
+            else if (link['target']['id'] === id){
+                decrease_connections.push(link['source']['id'])
+                //link['source']['node']['connections'] = link['source']['node']['connections'] - 1
+                all_data.links.splice(index, 1);
+                //delete all_data['links'][index]
+            }
+            else index += 1
+        }
+        index = 0
+        while (index < all_data['nodes'].length){
+            let node = all_data['nodes'][index]
+            if (node.id === id){
+                all_data.nodes.splice(index, 1);
+            }
+            else if (decrease_connections.includes(node['id'])){
+                all_data['nodes'][index]['connections'] = all_data['nodes'][index]['connections'] - 1
+                if (all_data['nodes'][index]['connections'] === 0) {
+                    all_data.nodes.splice(index, 1);
+                    deleted_nodes.push(node['id'])
+                }
+                let pos = decrease_connections.indexOf(node['id']);
+                decrease_connections.splice(pos, 1);
+            }
+            else
+                index = index + 1
+        }
+        all_ids = all_ids.filter(nid => !deleted_nodes.includes(nid))
+        current_results = current_results.filter(nid => !deleted_nodes.includes(nid))
+        text_success.text("The node was deleted from the graph!")
+        success_card.removeClass('d-none')
+        expand_section.hide()
+        updateGraph()
+
+    }
+</script>
+<!-- END DELETE NODE FUNCTION-->
+
+<!-- Begin script card info node -->
+<script>
+    function completeInfoCard(node, orig_node)
+    {
+        hideInfoCardAlerts()
+        if (node.type === 'Fake_Statement') {
+            hideUnhideInfoCardContent(true, false, false, false, false, false)
+
+            info_graph_statement.text(node.statement)
+            info_graph_read_article.attr('href', node.url);
+            info_graph_type.text('Statement');
+            info_graph_languageText.text()
+            expand_section.hide()
+
+
+        }
+
+        else if (node.type === 'Entity'){
+            hideUnhideInfoCardContent(false, false, false, false, false)
+
+            info_graph_type.text('Keyword');
+            info_graph_statement.text(node.name)
+            expand_section.show()
+
+        }
+         else if (node.type === 'Record'){
+            hideUnhideInfoCardContent(false, false, false, false, false)
+
+            info_graph_type.text('Record');
+            info_graph_statement.text(node.name)
+            expand_section.show()
+
+        }
+        else if (node.type === 'Location'){
+            hideUnhideInfoCardContent(false, false, false, false, false)
+
+            info_graph_type.text('Country');
+            info_graph_statement.text(node.name)
+            expand_section.show()
+
+        }
+        else if (node.type === 'Channel'){
+            hideUnhideInfoCardContent(false, false, false, false, false)
+
+            info_graph_type.text('Channel');
+            info_graph_statement.text(node.name)
+            expand_section.show()
+
+        }
+        else if (node.type === 'Language'){
+            hideUnhideInfoCardContent(false, false, false, false, false)
+
+            info_graph_type.text('Language');
+            info_graph_statement.text(node.name)
+            expand_section.show()
+        }
+
+        info_graph_hide.off('click');
+        info_graph_hide.click(function() {
+            console.log('Aici functie ascundem nodul cu intra id= ' + node.intra_id)
+            if (orig_node['type'] in hand_selected_nodes) {
+                const nodeEl = orig_node.__threeObj;
+                nodeEl.color = colors['hide']; // Text color based on type
+                nodeEl.backgroundColor = colors['hide']
+                //console.log(hand_selected_nodes[orig_node['type']])
+                hand_selected_nodes[orig_node['type']] = hand_selected_nodes[orig_node['type']].filter(mnode => mnode !== orig_node.id)
+                //console.log(orig_node)
+                //console.log(hand_selected_nodes[orig_node['type']])
+            }
+
+        });
+
+        info_graph_expand.off('click');
+        //info_graph_expand.preventDefault()
+        info_graph_expand.click(function() {
+            console.log('Aici functie expand cu intra id= ' + node.intra_id)
+            expand(node.intra_id)
+        });
+
+        info_graph_remove.off('click');
+        info_graph_remove.click(function() {
+            console.log('Aici functie remove cu intra id= ' + node.intra_id)
+            delete_node(orig_node)
+        });
+        //console.log(info_graph_connections)
+        // console.log(node['connections'])
+        // console.log(node)
+        info_graph_connections_figureText.text(orig_node['connections'])
+        info_graph_card.show()
+    }
+
+    //parameters will be true or false for each content type
+
+    function hideUnhideInfoCardContent(readArticle, narrative, language, channels, publicFigure, hide_control=true) {
+        // Folosește variabilele date și ajustează vizibilitatea folosind operatorul ternar
+        readArticle ? info_graph_read_article.show() : info_graph_read_article.hide();
+        narrative ? info_graph_narrative.show() : info_graph_narrative.hide();
+        language ? info_graph_language.show() : info_graph_language.hide();
+        channels ? info_graph_channels.show() : info_graph_channels.hide();
+        publicFigure ? info_graph_public_figure.show() : info_graph_public_figure.hide();
+        hide_control ? info_graph_hide.show() : info_graph_hide.hide();
+    }
+
+    $(document).ready(function() {
+        $('#close-info-graph-btn').click(function() {
+            info_graph_card.hide(); // Ascunde cardul folosind jQuery
+        });
+
+
+    });
+
+    var info_graph_card = $('#info_graph_card');
+    var info_graph_read_article = $('#graph_info_read_article');
+    var info_graph_hide = $('#graph_info_hide');
+    var info_graph_remove = $('#graph_remove');
+    var info_graph_expand = $('#graph_info_expand');
+    var info_graph_type = $('#graph_info_type');
+    var info_graph_statement = $('#graph_info_statement');
+    var info_graph_narrative = $('#graph_info_narrative');
+    var info_graph_narrativeText = info_graph_narrative.find('span');
+    var info_graph_channels = $('#graph_info_channels');
+    var info_graph_channelsText = info_graph_channels.find('span');
+    var info_graph_public_figure = $('#graph_info_public_figure');
+    var info_graph_public_figureText = info_graph_public_figure.find('span');
+    var info_graph_connections = $('#graph_info_connections');
+    var info_graph_connections_figureText = info_graph_connections.find('span');
+    var info_graph_language = $('#graph_info_languages');
+    var info_graph_languageText = info_graph_language.find('span');
+    var expand_section = $('#expand_section')
+
+</script>
+
+<script>
+    function showLoadingCard() {
+        document.getElementById('loadingIndicator').style.display = 'flex';
+    }
+
+    function hideLoadingCard() {
+        document.getElementById('loadingIndicator').style.display = 'none';
+    }
+</script>
+<!-- End script card info node -->
+
+
+
+
+
+
+
+<script src="{{ url_for('static', filename='/layout/graph/js/loadingPage.js')}}"></script>
+ {% include 'footer.html' %}

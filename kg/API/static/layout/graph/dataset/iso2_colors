@@ -1,0 +1,274 @@
+BE,Belgium,#026CB6
+C_,"China, mainland",#5B4334
+GG,Guernsey,#715238
+LU,Luxembourg,#0C5340
+TW,"China, Taiwan Province of",#58669B
+JE,Jersey,#1B88B4
+HK,"China, Hong Kong SAR",#79484E
+MO,"China, Macao SAR",#2E3E67
+AW,Aruba,#40DD57
+AF,Afghanistan,#B2B270
+AO,Angola,#B3846E
+AI,Anguilla,#512A03
+AX,Åland Islands,#D271D0
+AL,Albania,#B37D5F
+AE,United Arab Emirates,#84C678
+AR,Argentina,#4D8405
+AM,Armenia,#C46EB1
+AS,American Samoa,#575FEE
+AQ,Antarctica,#0B7520
+TF,French Southern and Antarctic Territories,#2EB95B
+AT,Austria,#97F7E0
+AZ,Azerbaijan,#5E2895
+BI,Burundi,#426087
+BJ,Benin,#027579
+BA,Bosnia and Herzegovina,#764A82
+BL,Saint Barthélemy,#6DB7CB
+CH,Switzerland,#BCC465
+CL,Chile,#371A5D
+CI,Côte d'Ivoire,#F42012
+CM,Cameroon,#579466
+CD,Democratic Republic of the Congo,#39CEDC
+CG,Congo,#17C96B
+CK,Cook Islands,#5054C4
+CO,Colombia,#C8053E
+CV,Cabo Verde,#5E3C49
+CR,Costa Rica,#73400A
+CU,Cuba,#6CF3C0
+CX,Christmas Island,#064C86
+CY,Cyprus,#867A14
+DK,Denmark,#77982A
+DO,Dominican Republic,#CFA13D
+DZ,Algeria,#D45083
+EC,Ecuador,#9E510D
+GM,Gambia,#C31CCC
+GW,Guinea-Bissau,#D031FB
+GQ,Equatorial Guinea,#494F76
+GR,Greece,#AEB412
+GL,Greenland,#FB4230
+IN,India,#8D4261
+IE,Ireland,#F389F5
+JO,Jordan,#AFEA3B
+JP,Japan,#345356
+KZ,Kazakhstan,#6468D5
+KE,Kenya,#90469F
+KG,Kyrgyzstan,#26115B
+KH,Cambodia,#8DA731
+KI,Kiribati,#D724A3
+KR,Republic of Korea,#4BA3D9
+KW,Kuwait,#71C207
+LK,Sri Lanka,#9B2B79
+LS,Lesotho,#175C40
+LT,Lithuania,#394F26
+LV,Latvia,#6E0305
+MA,Morocco,#698798
+MC,Monaco,#53A7AF
+MD,Republic of Moldova,#628F52
+MG,Madagascar,#B13B91
+MV,Maldives,#257738
+MX,Mexico,#0F0052
+MH,Marshall Islands,#53C0DB
+MZ,Mozambique,#297761
+MR,Mauritania,#AA06E9
+MS,Montserrat,#86C2A9
+MU,Mauritius,#B34C4D
+MW,Malawi,#56E358
+MY,Malaysia,#AE2CA5
+GS,South Georgia and the South Sandwich Islands,#B42F37
+SJ,Svalbard and Jan Mayen Islands,#4E0A8C
+SB,Solomon Islands,#AAD289
+SR,Suriname,#70486A
+SK,Slovakia,#77558F
+SI,Slovenia,#9D6C0F
+SE,Sweden,#66E8DC
+SZ,Eswatini,#75AF5D
+SC,Seychelles,#904E6D
+TD,Chad,#780667
+TK,Tokelau,#D17A84
+TM,Turkmenistan,#2A0256
+TL,Timor-Leste,#3E4379
+TO,Tonga,#ED4D1C
+TN,Tunisia,#447577
+TR,Türkiye,#473B5E
+TZ,United Republic of Tanzania,#1D2D5D
+UG,Uganda,#5F60FC
+UA,Ukraine,#467A67
+UY,Uruguay,#286768
+US,United States of America,#152D4F
+UZ,Uzbekistan,#81720F
+VA,Holy See,#8137DA
+VN,Viet Nam,#9364F7
+VU,Vanuatu,#EF117C
+_C,Abyei,#A75B38
+_D,Aksai Chin,#428885
+_E,Arunachal Pradesh,#1D5675
+_F,Bassas da India,#5E5EB0
+_G,Europa Island,#66CCC9
+_H,Glorioso Islands,#D27A98
+_I,Juan de Nova Island,#544D74
+_J,Tromelin Island,#67CB5E
+_K,Hala'ib Triangle,#5B056A
+_L,Hala'ib Triangle,#DBD555
+_M,Ilemi Triangle,#356E37
+_N,Jammu and Kashmir,#5EAA63
+_O,---,#51BFA4
+_P,Kuril Islands,#884958
+_Q,Bi'r Tawīl,#218D34
+_R,Paracel Islands,#7DAE68
+_S,Spratly Islands,#5F7F42
+_T,Senkaku Islands,#92EC7E
+_U,Scarborough Reef,#C639DE
+_V,Akrotiri,#CB54E8
+_W,Dekelia,#BDD896
+_X,---,#8B6841
+YE,Yemen,#9BF30C
+ZA,South Africa,#30B984
+ZM,Zambia,#04D9C6
+ZW,Zimbabwe,#36D054
+AD,Andorra,#94BF69
+BM,Bermuda,#D1FEAB
+BO,Bolivia (Plurinational State of),#9E5C15
+BR,Brazil,#848C5E
+AG,Antigua and Barbuda,#50A487
+BF,Burkina Faso,#E39CDF
+BD,Bangladesh,#30EE55
+BG,Bulgaria,#5659D8
+BH,Bahrain,#2286C0
+BS,Bahamas,#86EFAD
+BY,Belarus,#0FB10D
+BZ,Belize,#8263B0
+BB,Barbados,#ADF49E
+BN,Brunei Darussalam,#5D65B1
+BT,Bhutan,#82ABC4
+BV,Bouvet Island,#651F65
+BW,Botswana,#721D28
+CF,Central African Republic,#476661
+CA,Canada,#D802E0
+CC,Cocos (Keeling) Islands,#C9916E
+CW,Curaçao,#7AB2A4
+KM,Comoros,#7B4DD5
+KY,Cayman Islands,#479581
+CZ,Czechia,#2AAE8E
+DE,Germany,#9D5E37
+DJ,Djibouti,#624200
+DM,Dominica,#724E64
+EG,Egypt,#6E4336
+ER,Eritrea,#682722
+EH,Western Sahara,#5B1466
+EE,Estonia,#8FAC01
+ET,Ethiopia,#992F37
+FI,Finland,#684B88
+FJ,Fiji,#51669B
+FK,Falkland Islands (Malvinas),#4BCB5A
+FR,France,#832A71
+FO,Faroe Islands,#5B1D54
+FM,Micronesia (Federated States of),#152166
+GA,Gabon,#D675E7
+GB,United Kingdom,#9BE892
+GE,Georgia,#0B74AB
+GH,Ghana,#34DE11
+GI,Gibraltar,#2A6459
+GN,Guinea,#D285CE
+GP,Guadeloupe,#1F2A85
+GD,Grenada,#5E8A89
+GT,Guatemala,#0F2C55
+GF,French Guiana,#F2C643
+GU,Guam,#2C6C31
+GY,Guyana,#940E23
+HM,Heard and McDonald Islands,#955571
+HN,Honduras,#952230
+HR,Croatia,#6E130A
+HT,Haiti,#833B5D
+HU,Hungary,#C9B12F
+ID,Indonesia,#2A538C
+IM,Isle of Man,#0A4865
+IO,British Indian Ocean Territory,#D6B991
+IR,Iran (Islamic Republic of),#DCC98F
+IQ,Iraq,#1FCFF9
+IS,Iceland,#577C8C
+IL,Israel,#563481
+IT,Italy,#B442C8
+JM,Jamaica,#5976CD
+KN,Saint Kitts and Nevis,#397A60
+LA,Lao People's Democratic Republic,#E29074
+LB,Lebanon,#003C8B
+LR,Liberia,#325E63
+LY,Libya,#702101
+LC,Saint Lucia,#33E6F8
+MT,Malta,#B2D502
+MM,Myanmar,#0ACDF7
+ME,Montenegro,#2D1996
+MN,Mongolia,#53831D
+LI,Liechtenstein,#0C6093
+MF,Saint-Martin (French Part),#58A864
+MK,North Macedonia,#A2EB54
+ML,Mali,#736436
+MP,Northern Mariana Islands,#CC131C
+NO,Norway,#704A7B
+NP,Nepal,#0A009A
+NR,Nauru,#72CFC4
+MQ,Martinique,#41856D
+NZ,New Zealand,#531653
+OM,Oman,#8536A4
+PK,Pakistan,#1BA604
+PA,Panama,#2EFA2C
+PN,Pitcairn Islands,#437DC6
+PE,Peru,#73D9FD
+PH,Philippines,#5C8B74
+PW,Palau,#77619C
+PG,Papua New Guinea,#787E51
+PL,Poland,#AE6259
+PR,Puerto Rico,#63133B
+KP,Democratic People's Republic of Korea,#918759
+YT,Mayotte,#CBD958
+,Namibia,#130FD4
+NC,New Caledonia,#443D8E
+NE,Niger,#62A0B5
+NF,Norfolk Island,#533132
+NG,Nigeria,#909103
+NI,Nicaragua,#33B5D0
+NU,Niue,#6CD3CE
+NL,Netherlands,#E3D060
+PY,Paraguay,#860C06
+QA,Qatar,#42CBBE
+RE,Réunion,#685E17
+RO,Romania,#81E95F
+RU,Russian Federation,#447A58
+RW,Rwanda,#4CE9DA
+SA,Saudi Arabia,#6B537B
+SD,Sudan,#B55678
+SN,Senegal,#9F3850
+SG,Singapore,#426977
+SL,Sierra Leone,#260297
+SV,El Salvador,#65CF96
+SM,San Marino,#5C4AB2
+SO,Somalia,#76474F
+PM,Saint Pierre and Miquelon,#9E211E
+RS,Serbia,#02A8FD
+SS,South Sudan,#64537B
+ST,Sao Tome and Principe,#89C6EA
+SX,Sint Maarten (Dutch Part),#8706A2
+SY,Syrian Arab Republic,#3D676A
+TC,Turks and Caicos Islands,#5C9C94
+TG,Togo,#6DC76D
+TH,Thailand,#372598
+TJ,Tajikistan,#F880AB
+TT,Trinidad and Tobago,#CC6793
+TV,Tuvalu,#E962EB
+VC,Saint Vincent and the Grenadines,#71C8A4
+VG,British Virgin Islands,#68D72A
+VI,United States Virgin Islands,#A63464
+WF,Wallis and Futuna Islands,#1A1087
+WS,Samoa,#57C276
+CN,China,#6D6D1D
+_A,Belgium-Luxembourg,#F8026D
+AU,Australia,#246658
+PF,French Polynesia,#070750
+SH,"Saint Helena, Ascension and Tristan da Cunha",#7B4B8B
+ES,Spain,#1A495D
+UM,US Minor Is.,#DFC056
+VE,Venezuela (Bolivarian Republic of),#6B8E51
+_B,Channel Islands,#BF2631
+BQ,"Bonaire, Sint Eustatius and Saba",#65143A
+PS,Palestine,#5D8189
+PT,Portugal,#9ED245
