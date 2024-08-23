@@ -12,7 +12,32 @@ This project is a 3D web-based visualizer for ontologies (ttl files), built on t
 
 ![Demo](https://github.com/cheresioana/owl_ttl_web_visualizer/blob/main/ress/Video_nav3d4.gif)
 
+## Deployment Instructions
+
+To deploy the OWL Web Visualizer and its dependencies using Docker Compose, follow these steps:
+
+### 1. Clone the Repository
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/yourusername/yourrepository.git
+cd yourrepository
+```
+### 2. Start the service using docker-compose
+```
+docker-compose up --build
+```
+### 3. Access the OWL Web Visualizer
+
+The project starts at: http://localhost:5005
+
 ## Project Background
 
 This visualizer is a sub-component of the larger [MindBugs Discovery Project](https://discovery.mindbugs.ro/), 
 where it is utilized to identify disinformation patterns. You can find the source code for the broader project [here](https://github.com/cheresioana/kg_repo).
+
+
+## Credits
+
+Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or European Commission. Neither the European Union nor the granting authority can be held responsible for them. Funded within the framework of the NGI Search project under grant agreement No 101069364.
