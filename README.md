@@ -4,11 +4,12 @@ This project is a 3D web-based visualizer for ontologies (ttl files), built on t
 
 ## Features
 
-- **Direct Deployment:** Easily deploy the visualizer on your platform.
+- **Fast Deployment:** Easily deploy the visualizer on your platform.
 - **File Upload:** Use the "Load" button to upload your `.ttl` (Turtle) ontology files.
 - **Interactive Exploration:** Navigate, search, and visualize the ontology with the implemented tools.
 - **Node Expansion:** Click on nodes to expand them and reveal more connections within the ontology.
-- **Node Deletion:** Remove nodes to declutter the visualization and focus on specific parts of the ontology.
+- **Node Deletion:** Remove nodes to declutter the visualization and focus on specific parts of the ontology (it does not delete the node from the db).
+- **Search Functionality:** The system retrieves and displays text from the ontology that matches the search query, with case-insensitive matching.
 
 ![Demo](https://github.com/cheresioana/owl_ttl_web_visualizer/blob/main/ress/Video_nav3d4.gif)
 
@@ -31,6 +32,19 @@ docker-compose up --build
 ### 3. Access the OWL Web Visualizer
 
 The project starts at: http://localhost:5005
+
+## How it works
+
+This project uses a Neo4j database to manage and visualize ontology data. Upon uploading a `.ttl` file, the system automatically generates a Neo4j database, creating nodes and edges based on the ontology structure. The visualizer initially displays the first 10 nodes along with their respective connections.
+
+
+### Component Overview
+
+- **ExploreOWL:** Handles the upload function and the creation of the Neo4j database.
+- **Neo4JConnector:** Manages interactions with the Neo4j database.
+- **DataObject:** Facilitates data transfer between components.
+- **API:** UI and connections.
+
 
 ## Project Background
 
