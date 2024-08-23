@@ -10,7 +10,7 @@ This project is a 3D web-based visualizer for ontologies (ttl files), built on t
 - **Node Expansion:** Click on nodes to expand them and reveal more connections within the ontology.
 - **Node Deletion:** Remove nodes to declutter the visualization and focus on specific parts of the ontology.
 
-![Demo](https://github.com/cheresioana/owl_ttl_web_visualizer/blob/main/ress/Video_nav3d_2.gif)
+![Demo](https://github.com/cheresioana/owl_ttl_web_visualizer/blob/main/ress/Video_nav3_3.gif)
 
 ## Project Background
 
