@@ -9,3 +9,4 @@ instance/
 
 
 **/clean_venv/
+persistent_data/
