@@ -54,6 +54,9 @@ where it is utilized to identify disinformation patterns. You can find the sourc
 
 ## Credits
 
+Our only ask is if you use this project for your public or private work we would love to hear from you! You have no obligation, but it would really help us to keep track of our impact and the variety of projects where this can be used. Contact us at ioana.cheres@techwave.ro. If you have any questions write on the same email or open an issue on Github.
+
+
 Funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or European Commission. Neither the European Union nor the granting authority can be held responsible for them. Funded within the framework of the NGI Search project under grant agreement No 101069364.
 
 
